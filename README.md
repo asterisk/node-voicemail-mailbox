@@ -20,6 +20,54 @@ or add the following the your package.json file
 
 # Usage
 
+Create a mailbox writer instance:
+
+```JavaScript
+var dal; // voicemail data access layer instance
+var promptHelper; // voicemail prompt instance
+var config; // voicemail config instance
+var mailboxHelper = require('voicemail-mailbox')({
+  dal: dal,
+  prompt: promptHelper,
+  config, config
+});
+var channel; // channel instance
+var mailbox; // mailbox instance
+
+var writer = mailboxHelper.createWriter(mailbox, channel);
+```
+
+For more information on voicemail data access layer, see [voicemail-data](http://github.com/asterisk/node-voicemail-data). For more information on voicemail prompt, see [voicemail-prompt](http://github.com/asterisk/node-voicemail-prompt). For more information on voicemail config, see [voicemail-config](http://github.com/asterisk/node-voicemail-config)
+
+
+Start recording a message for the mailbox:
+
+```JavaScript
+writer.record()
+  .then(function() {
+    // recording has finished
+  })
+  .catch(function(err) {
+  });
+```
+
+Stop the recording at any point (this can also be used to stop playing the prompt that plays before the recording is started):
+
+```JavaScript
+writer.stop();
+```
+
+After the recording has finished, save the recording to the mailbox:
+
+```JavaScript
+writer.save()
+  .then(function() {
+    // recording saved
+  })
+  .catch(function(err) {
+  });
+```
+
 # Development
 
 After cloning the git repository, run the following to install the module and all dev dependencies:
