@@ -84,15 +84,19 @@ var getMockClient = function() {
       var self = this;
 
       setTimeout(function() {
+        self.emitRecordingFinished();
         cb(null);
-        recordingFinished = true;
-        self.emit('RecordingFinished', {event: 'RecordingFinished'}, {
-          name: self.recordingName,
-          duration: asyncDelay,
-
-          removeListener: function() {}
-        });
       }, asyncDelay);
+    };
+
+    this.emitRecordingFinished = function() {
+      recordingFinished = true;
+      this.emit('RecordingFinished', {event: 'RecordingFinished'}, {
+        name: this.recordingName,
+        duration: asyncDelay,
+
+        removeListener: function() {}
+      });
     };
   };
   util.inherits(Client, Emitter);
@@ -398,6 +402,7 @@ describe('mailbox', function() {
       setTimeout(function() {
         if (promptFinished) {
           channel.emit('StasisEnd');
+          channel.emitRecordingFinished();
         } else {
           hangupInAWhile();
         }
