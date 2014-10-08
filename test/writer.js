@@ -201,7 +201,11 @@ var getMockDal = function() {
  */
 var getMockPrompt = function() {
   var promptHelper = {
-    create: function() {
+    create: function(sounds, channel) {
+      if (!sounds || !channel) {
+        throw new Error('missing arguments');
+      }
+
       return {
         play: function() {
           var innerDeferred = Q.defer();
