@@ -28,6 +28,8 @@ var recordingFinished = false;
 var promptFinished = false;
 // used to test whether or not the prompt was stopped
 var promptStopped = false;
+// used to test whether or not mwi was updated
+var mwiUpdated = false;
 // used to test message being saved
 var message = null;
 // milliseconds to delay async ops for mock requests
@@ -77,6 +79,15 @@ var getMockClient = function() {
       setTimeout(function() {
         cb(null);
       }, asyncDelay);
+    };
+
+    // actually client.mailboxes.update (will get denodeified)
+    this.mailboxes = {
+      update: function(opts, cb) {
+        setTimeout(function() {
+          cb(null);
+        }, asyncDelay);
+      }
     };
 
     // actually recording.stop (will get denodeified)
@@ -159,6 +170,20 @@ var getMockDal = function() {
         setTimeout(function() {
           innerDeferred.resolve([{name: 'Inbox'}]);
         }, asyncDelay);
+
+        return innerDeferred.promise;
+      }
+    },
+
+    mailbox: {
+      newMessage: function(mailboxInstance, mwiUpdater) {
+        var innerDeferred = Q.defer();
+
+        mwiUpdater(1, 2)
+          .then(function() {
+            mwiUpdated = true;
+            innerDeferred.resolve();
+          });
 
         return innerDeferred.promise;
       }
@@ -286,6 +311,7 @@ describe('mailbox', function() {
     recordingFinished = false;
     promptFinished = false;
     promptStopped = false;
+    mwiUpdated = false;
     message = null;
 
     done();
@@ -305,6 +331,7 @@ describe('mailbox', function() {
       .then(function() {
         assert(recordingFinished);
         assert(!promptStopped);
+        assert(mwiUpdated);
         assert(message.recording === 'voicemail/1/myrecording');
         assert(message.duration === asyncDelay);
 
@@ -343,6 +370,7 @@ describe('mailbox', function() {
       .then(function() {
         assert(recordingFinished);
         assert(promptStopped);
+        assert(mwiUpdated);
         assert(message.recording === 'voicemail/1/myrecording');
         assert(message.duration === asyncDelay);
 
@@ -385,6 +413,7 @@ describe('mailbox', function() {
       .then(function() {
         assert(recordingFinished);
         assert(!promptStopped);
+        assert(mwiUpdated);
         assert(message.recording === 'voicemail/1/myrecording');
         assert(message.duration === asyncDelay);
 
