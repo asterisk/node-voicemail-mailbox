@@ -20,6 +20,7 @@
   "dependencies": {
     "ari-client-wrapper": "^0.1.2",
     "machina": "^0.4.0-1",
+    "moment": "^2.8.3",
     "q": "^1.0.1"
   },
   "devDependencies": {
