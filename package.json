@@ -1,6 +1,6 @@
 {
   "name": "voicemail-mailbox",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Mailbox interface for Asterisk voicemail.",
   "main": "lib/mailbox.js",
   "private": true,
