@@ -20,6 +20,8 @@ or add the following the your package.json file
 
 # Usage
 
+## Writer
+
 Create a mailbox writer instance:
 
 ```JavaScript
@@ -66,6 +68,65 @@ writer.save()
   })
   .catch(function(err) {
   });
+```
+
+## Reader
+
+Create a mailbox reader instance:
+
+```JavaScript
+var dal; // voicemail data access layer instance
+var promptHelper; // voicemail prompt instance
+var config; // voicemail config instance
+var mailboxHelper = require('voicemail-mailbox')({
+  dal: dal,
+  prompt: promptHelper,
+  config, config
+});
+var channel; // channel instance
+var mailbox; // mailbox instance
+
+var reader = mailboxHelper.createReader(mailbox, channel);
+```
+
+For more information on voicemail data access layer, see [voicemail-data](http://github.com/asterisk/node-voicemail-data). For more information on voicemail prompt, see [voicemail-prompt](http://github.com/asterisk/node-voicemail-prompt). For more information on voicemail config, see [voicemail-config](http://github.com/asterisk/node-voicemail-config)
+
+
+Play the first message in the mailbox (defaults to new messages):
+
+```JavaScript
+reader.first();
+```
+
+Replay the current message in the mailbox:
+
+```JavaScript
+reader.replay();
+```
+
+Play the next message in the mailbox:
+
+```JavaScript
+reader.next();
+```
+
+Play the previous message in the mailbox:
+
+```JavaScript
+reader.prev();
+```
+
+Delete the current message in the mailbox:
+
+```JavaScript
+reader.delete();
+```
+
+Change mailbox folder:
+
+```JavaScript
+reader.changeFolder();
+reader.submitFolder(dtmf);
 ```
 
 # Development
