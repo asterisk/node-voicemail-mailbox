@@ -175,20 +175,6 @@ var getMockDal = function() {
       }
     },
 
-    mailbox: {
-      newMessage: function(mailboxInstance, mwiUpdater) {
-        var innerDeferred = Q.defer();
-
-        mwiUpdater(1, 2)
-          .then(function() {
-            mwiUpdated = true;
-            innerDeferred.resolve();
-          });
-
-        return innerDeferred.promise;
-      }
-    },
-
     message: {
       create: function(mailbox, inbox, fields) {
         return {
@@ -258,13 +244,36 @@ var getMockPrompt = function() {
 };
 
 /**
+ * Returns a mock notify helper for testing.
+ */
+var getMockNotify = function() {
+  return {
+    create: function(mailbox, message) {
+      return {
+        newMessage: function() {
+          var innerDeferred = Q.defer();
+
+          setTimeout(function() {
+            mwiUpdated = true;
+            innerDeferred.resolve();
+          }, asyncDelay);
+
+          return innerDeferred.promise;
+        }
+      };
+    }
+  };
+};
+
+/**
  * Returns a mock dependencies object for testing.
  */
 var getMockDependencies = function() {
   var dependencies = {
     config: getMockConfig(),
     dal: getMockDal(),
-    prompt: getMockPrompt()
+    prompt: getMockPrompt(),
+    notify: getMockNotify()
   };
 
   return dependencies;
