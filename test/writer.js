@@ -266,6 +266,24 @@ var getMockNotify = function() {
 };
 
 /**
+ * Returns a mock logger for testing.
+ */
+var getMockLogger = function() {
+  return {
+    child: function() {
+      return {
+        trace: function() {},
+        debug: function() {},
+        info: function() {},
+        warn: function() {},
+        error: function() {},
+        fatal: function() {}
+      };
+    }
+  };
+};
+
+/**
  * Returns a mock dependencies object for testing.
  */
 var getMockDependencies = function() {
@@ -273,7 +291,8 @@ var getMockDependencies = function() {
     config: getMockConfig(),
     dal: getMockDal(),
     prompt: getMockPrompt(),
-    notify: getMockNotify()
+    notify: getMockNotify(),
+    logger: getMockLogger()
   };
 
   return dependencies;

@@ -348,6 +348,20 @@ var getMockNotify = function() {
   };
 };
 
+/**
+ * Returns a mock logger for testing.
+ */
+var getMockLogger = function() {
+  return {
+    trace: function() {},
+    debug: function() {},
+    info: function() {},
+    warn: function() {},
+    error: function() {},
+    fatal: function() {}
+  };
+};
+
 describe('messages helper', function() {
 
   before(function(done) {
@@ -373,7 +387,8 @@ describe('messages helper', function() {
     var dependencies = {
       config: getMockConfig(),
       dal: getMockDal(),
-      notify: getMockNotify()
+      notify: getMockNotify(),
+      logger: getMockLogger()
     };
 
     messages = require('../lib/helpers/messages.js').create(

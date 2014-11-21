@@ -29,9 +29,10 @@ var dal; // voicemail data access layer instance
 var promptHelper; // voicemail prompt instance
 var config; // voicemail config instance
 var mailboxHelper = require('voicemail-mailbox')({
-  dal: dal,
-  prompt: promptHelper,
-  config, config
+  dal: dal, // voicemail data access layer
+  prompt: promptHelper, // voicemail prompt helper
+  config, config, // voicemail configuration
+  logger: logger // voicemail logging
 });
 var channel; // channel instance
 var mailbox; // mailbox instance

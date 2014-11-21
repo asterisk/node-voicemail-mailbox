@@ -322,11 +322,33 @@ var getMockMailbox = function() {
   return mailbox;
 };
 
+/**
+ * Returns a mock logger for testing.
+ */
+var getMockLogger = function() {
+  return {
+    child: function() {
+      return {
+        trace: function() {},
+        debug: function() {},
+        info: function() {},
+        warn: function() {},
+        error: function() {},
+        fatal: function() {}
+      };
+    }
+  };
+};
+
+/**
+ * Returns mock dependencies for testing.
+ */
 var getMockDependencies = function() {
   return {
     dal: getMockDal(),
     prompt: getMockPrompt(),
-    config: getMockConfig()
+    config: getMockConfig(),
+    logger: getMockLogger()
   };
 };
 
